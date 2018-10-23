@@ -1,0 +1,36 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #efefef;
+  background: url(../images/xwing.jpg) wheat;
+  color: #121212;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+h1 {
+  font-size: 2.2em;
+  margin-left: 60%;
+}
+
+h2 {
+  margin: 0.3rem;
+  font-size: 1.5em;
+}
+
+h3 {
+  text-align: center;
+}
+
+.char-box {
+  display: inline-block;
+  background: #efefef;
+  margin: 0.2%;
+  padding: 0.2em 1em;
+}
+
+.char-img {
+  width: 120px;
+  height: 90px;
+}

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Star Wars RPG Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" media="screen" href="assets/css/reset.css" />
+  <link rel="stylesheet" type="text/css" media="screen" href="assets/css/style.css" />
+  <script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+  <script src="assets/javascript/game.js"></script>
+</head>
+
+<body>
+  <header>
+    <h1 id="title">Star Wars RPG!</h1>
+  </header>
+
+  <section>
+    <div id="initial-row">
+      <div id="obiwan" class="char-box">
+        <h3 class="char-name">Obi-Wan Kenobi</h3>
+        <img src="assets/images/obi-wan-kenobi.jpg" alt="Obi-Wan Kenobi" class="char-img" />
+        <h3 id="obiwan-hp" class="char-hp">120</h3>
+      </div>
+
+      <div id="luke" class="char-box">
+        <h3 class="char-name">Luke Skeywalker</h3>
+        <img src="assets/images/LukeSkywalker.jpg" alt="Luke Skeywalker" class="char-img" />
+        <h3 id="luke-hp" class="char-hp">105</h3>
+      </div>
+
+      <div id="yoda" class="char-box">
+        <h3 class="char-name">Yoda</h3>
+        <img src="assets/images/yoda.jpg" alt="Yoda" class="char-img" />
+        <h3 id="yoda-hp" class="char-hp">155</h3>
+      </div>
+
+      <div id="sidious" class="char-box">
+        <h3 class="char-name">Darth Sidious</h3>
+        <img src="assets/images/darth-sidious.jpg" alt="Darth Sidious" class="char-img" />
+        <h3 id="sidious-hp" class="char-hp">145</h3>
+      </div>
+
+      <div id="vader" class="char-box">
+        <h3 class="char-name">Darth Vader</h3>
+        <img src="assets/images/vader-red.jpg" alt="Darth Vader" class="char-img" />
+        <h3 id="vader-hp" class="char-hp">180</h3>
+      </div>
+
+      <div id="maul" class="char-box">
+        <h3 class="char-name">Darth Maul</h3>
+        <img src="assets/images/darth-maul1.jpg" alt="Darth Maul" class="char-img" />
+        <h3 id="maul-hp" class="char-hp">130</h3>
+      </div>
+    </div>
+
+    <h2>Your Character</h2>
+    <div id="your-character"></div>
+    <h2>Enemies Available To Attach</h2>
+    <div id="enemies"></div>
+    <h2>Fight Section</h2>
+    <div id="fight-section"></div>
+    <button>Attack</button>
+    <h2>Defender</h2>
+    <div id="defender"></div>
+  </section>
+</body>
+
+</html>
