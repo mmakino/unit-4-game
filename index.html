@@ -59,37 +59,20 @@
 
     <h2>Your Character</h2>
     <div id="you"></div>
-    <h2>Enemies Available To Attach</h2>
+    <h2>Enemies Available To Attack</h2>
     <div id="enemy-section"></div>
     <h2>Fight Section</h2>
     <div id="fight-section"></div>
-    <button>Attack</button>
+    <button id="attack">Attack</button>
     <h2>Defender</h2>
     <div id="defender-section"></div>
+    <p id="msg1"></p>
+    <p id="msg2"></p>
+
+    <button id="start">Restart</button>
+    <br>
   </section>
 
-  <script>
-    $(document).ready(function () {
-      $(".char-box").on("click", function () {
-        console.log($(this).attr("id") + " is clicked on");
-        console.log("parent: " + $(this).parent().attr("id"));
-        if ($(this).parent().attr("id") === 'initial-row') {
-          $(this).css("border", "3px solid green");
-          $(this).appendTo("#you");
-          $("#initial-row > .char-box").css("background", "red");
-          $("#initial-row > .char-box").appendTo("#enemy-section");
-        }
-        else if ($(this).parent().attr("id") === 'enemy-section') {
-          console.log("Enemy " + $(this).attr("id") + " is selected");
-          $(this).css("background", "black");
-          $(this).css("color", "white");
-          $(this).css("border", "3px solid green");
-          $(this).appendTo("#defender-section");
-        }
-      });
-
-    });
-  </script>
 </body>
 
 </html>

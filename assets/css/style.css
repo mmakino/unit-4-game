@@ -34,3 +34,27 @@ h3 {
   width: 120px;
   height: 90px;
 }
+
+.char-box-initial {
+  display: inline-block;
+  background: #efefef;
+  margin: 0.2%;
+  padding: 0.2em 1em;
+}
+
+.char-box-you {
+  background: #efefef;
+  border: 3px solid green;
+}
+
+.char-box-enemy {
+  background: red;
+  color: black;
+  border: "none";
+}
+
+.char-box-defender {
+  background: black;
+  color: white;
+  border: 3px solid green;
+}
