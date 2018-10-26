@@ -15,11 +15,11 @@ function run() {
 }
 
 let game = {
-  player: null, // player's character name
-  enemy: null, // enemy's character name
-  attacker: null,
-  defender: null,
-  numAttacks: 0, // the number of attacks
+  player: null,    // player's character name
+  enemy: null,     // enemy's character name
+  attacker: null,  // player in the fight section
+  defender: null,  // enemy in the fight section
+  numAttacks: 0,   // the number of attacks
 }
 
 //
@@ -31,7 +31,7 @@ function start() {
   game.attacker = null;
   game.defender = null;
   game.numAttacks = 0;
-
+  // TO-DO: improve w/o reloading
   location.reload();
 }
 
@@ -79,7 +79,7 @@ class Fighter {
   constructor(id, apMax = 10, cApFactor = 1.0) {
     this.elem = $(`#${id}`);
     this.name = $(`#${id} h3.char-name`).text();
-    this.hp = $(`#${id} h3.char-hp`);
+    this.hp = $(`#${id} h3.char-hp`); // Health Point
     this.ap = this.attackPower(apMax);
     this.cAp = this.counterAttackPower(cApFactor);
   }
@@ -104,7 +104,6 @@ class Fighter {
     return parseInt(this.hp.text());
   }
 }
-
 
 //
 // fight as a user clicks on the Attack button 
@@ -149,29 +148,43 @@ function attack() {
 
 function displayMessage() {
   clearMsg();
-  if (game.attacker.outOfHealthPoint()) {
+
+  if (game.attacker.outOfHealthPoint() && game.defender.outOfHealthPoint()) {
+    $("#msg1").text("Tie game! GAME OVER!!!");
+    $("#start").show();
+  }
+  // player is out of the Health Point
+  else if (game.attacker.outOfHealthPoint()) {
     $("#msg1").text("You've been defeated. GAME OVER!!!");
     $("#start").show();
-  } else if (game.defender.outOfHealthPoint()) {
-    if (remainingEnemies() === 0) {
+  }
+  // player defeated the enemy  
+  else if (game.defender.outOfHealthPoint()) {
+    if (remainingEnemies() === 0) {  // No enemies left
       $("#msg1").text("You Won!!! GAME OVER!!!");
       $("#start").show();
     } else {
-      $("#msg1").text(`You have defeated ${game.defender.name}. You can choose to finght another enemy.`);
+      $("#msg1").text(`You have defeated ${game.defender.name}. You can choose to fight another enemy.`);
     }
-  } else {
+  }
+  // still in fight
+  else {
     $("#msg1").text(`You attacked ${game.defender.name} for ${ap} damage`);
     $("#msg2").text(`${game.defender.name} attacked you back for ${game.defender.cAp} damage`);
   }
 }
 
+//
+// Clear the game status messages at the bottom
+//
 function clearMsg() {
   $("#msg1").text("");
   $("#msg2").text("");
 }
-// You attacked ${defender} for # damage
-// ${defender} attacked you back for # damage
 
+//
+// The remaining number of enemies
+//
 function remainingEnemies() {
   return $("#enemy-section > .char-box").length;
 }
