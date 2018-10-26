@@ -36,12 +36,9 @@ h3 {
   height: 70px;
 }
 
-/* .char-box-initial {
-  display: inline-block;
-  background: #efefef;
-  margin: 0.2%;
-  padding: 0.2em 1em;
-} */
+#you, #defender-section {
+  height: 115px;
+}
 
 /*** The following classes are dynamically added ***/
 
