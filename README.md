@@ -2,14 +2,14 @@
 
 ### Overview
 
-Star Wars themed RPG game rewritten in javascript.
-https://mmakino.github.io/unit-4-game/
+* Star Wars themed RPG game written in javascript.
+* https://mmakino.github.io/unit-4-game/
 
 ### How to play
 
-1. Choose a chracter by clicking on the fighter's picture.
+1. Choose a character by clicking on the fighter's picture.
 
-2. Choose an opponent by clicking on one of enemy's picture.
+2. Choose an opponent character by clicking on one of enemy's pictures.
 
 3. Press `Attack` button to impose damages onto the opponent.
 
