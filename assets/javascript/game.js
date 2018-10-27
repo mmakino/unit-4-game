@@ -210,7 +210,7 @@ class Fighter {
   }
 
   attackPower(max = 10, base = 3) {
-    return Math.floor(Math.random() * max) + (max - base);
+    return Math.floor(Math.random() * (max - base)) + base;
   }
 
   counterAttackPower(factor = 1.0) {
