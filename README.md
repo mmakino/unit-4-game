@@ -3,6 +3,7 @@
 ### Overview
 
 Star Wars themed RPG game rewritten in javascript.
+https://mmakino.github.io/unit-4-game/
 
 ### How to play
 

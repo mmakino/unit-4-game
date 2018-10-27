@@ -89,7 +89,8 @@ let game = {
     let damage = game.attack();
     game.displayMessage(damage);
 
-    if (game.defender.outOfHealthPoint()) {
+    if (game.defender.outOfHealthPoints()) {
+      // detach and save it for restart 
       game.charBoxes.push(game.defender.elem.detach());
       game.defender = null;
       game.enemy = null;
@@ -101,17 +102,14 @@ let game = {
   //
   attack: function() {
     let damage = game.attacker.ap * game.numAttacks;
-    game.defender.healthPoint -= damage;
+    game.defender.healthPoints -= damage;
 
-    if (game.defender.healthPoint < 0) {
-      game.defender.healthPoint = 0;
-    }
-    else {
-      game.attacker.healthPoint -= game.defender.cAp;
-    }
+    if (!game.defender.outOfHealthPoints()) {
+      game.attacker.healthPoints -= game.defender.cAp;
 
-    if (game.attacker.healthPoint < 0) {
-      game.attacker.healthPoint = 0;
+      if (game.attacker.outOfHealthPoints()) {
+        game.isOver = true;
+      }
     }
 
     return damage;
@@ -119,12 +117,13 @@ let game = {
 
   //
   // Display the game fighting status messages
+  // game.isOver condition may be updated
   //
   displayMessage: function(damage) {
     game.clearMsg();
 
-    // player defeated the enemy  
-    if (game.defender.outOfHealthPoint()) {
+    // player defeated the enemy
+    if (game.defender.outOfHealthPoints()) {
       if (game.remainingEnemies() === 0) { // No enemies left
         $("#msg1").text("You Won!!! GAME OVER!!!");
         $("#start").show();
@@ -134,7 +133,7 @@ let game = {
       }
     }
     // player is out of the Health Point; i.e. lost
-    else if (game.attacker.outOfHealthPoint()) {
+    else if (game.attacker.outOfHealthPoints()) {
       $("#msg1").text("You've been defeated. GAME OVER!!!");
       $("#start").show();
       game.isOver = true;
@@ -218,15 +217,18 @@ class Fighter {
     return Math.floor(this.ap * factor);
   }
 
-  outOfHealthPoint() {
-    return (this.healthPoint <= 0);
+  outOfHealthPoints() {
+    if (this.healthPoints < 0) {
+      this.healthPoints = 0;
+    }
+    return (this.healthPoints === 0);
   }
 
-  set healthPoint(point) {
+  set healthPoints(point) {
     this.hp.text(point);
   }
 
-  get healthPoint() {
+  get healthPoints() {
     return parseInt(this.hp.text());
   }
 }
