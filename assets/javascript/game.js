@@ -165,8 +165,6 @@ let game = {
   // (re-)start the game
   //
   start: function () {
-    // location.reload();
-
     ['player', 'enemy', 'attacker', 'defender'].forEach(function(e) {
       game[e] = null;
     });
