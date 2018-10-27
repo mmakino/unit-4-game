@@ -5,7 +5,7 @@ Star Wars RPG Game
 */
 
 //
-// Start listening to events
+// Listen to mouse click events
 //
 function run() {
   $(".char-box").click(setupFight);
@@ -14,6 +14,9 @@ function run() {
   $("#start").click(start);
 }
 
+//
+// Game data object
+//
 let game = {
   player: null,    // player's character name
   enemy: null,     // enemy's character name
@@ -38,7 +41,7 @@ function start() {
 //
 // fight setup through a user character selections 
 //
-function setupFight(event) {
+function setupFight() {
   let section_name = $(this).parent().attr("id");
   console.log($(this).attr("id") + " is clicked on");
   console.log("parent: " + $(this).parent().attr("id"));
@@ -110,10 +113,10 @@ class Fighter {
 //
 function fight() {
   if (game.player && !game.attacker) {
-    game.attacker = new Fighter(game.player, 10, 1.0);
+    game.attacker = new Fighter(game.player, 12, 1.1);
   }
   if (game.enemy && !game.defender) {
-    game.defender = new Fighter(game.enemy, 10, 1.2);
+    game.defender = new Fighter(game.enemy, 10, 1.0);
   }
   if (!game.attacker || !game.defender) {
     return;
