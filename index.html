@@ -82,7 +82,10 @@
   </section>
 
   <script>
-    $(document).ready(run);
+    $(document).ready(function() {
+      let rpgGame = new Game();
+      run(rpgGame);
+    });
   </script>
 
 </body>

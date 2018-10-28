@@ -7,7 +7,10 @@ Star Wars RPG Game
 //
 // Listen to mouse click events
 //
-function run() {
+// Need to pass the "game" class instance; otherwise, it will lose
+// the binding to the select element in the next click event.
+//
+function run(game) {
   $(".char-box").on("click", game, game.setupFight);
   $("#attack").on("click", game, game.fight);
   $("#start").hide();
@@ -15,21 +18,23 @@ function run() {
 }
 
 //
-// Game object
+// Game class
 //
-let game = {
-  player: null,      // player's character name
-  enemy: null,       // enemy's character name
-  attacker: null,    // player in the fight section
-  defender: null,    // enemy in the fight section
-  numAttacks: 0,     // the number of attacks
-  isOver: false,     // game status boolean
-  charBoxes: [],     // save removed character boxes
+class Game {
+  constructor() {
+    this.player = null;      // player's character name
+    this.enemy = null;       // enemy's character name
+    this.attacker = null;    // player in the fight section
+    this.defender = null;    // enemy in the fight section
+    this.numAttacks = 0;     // the number of attacks
+    this.isOver = false;     // game status boolean
+    this.charBoxes = [];     // save removed character boxes  
+  }
 
   //
   // fight setup through a user character selections 
   //
-  setupFight: function(event) {
+  setupFight(event) {
     let section_name = $(this).parent().attr("id");
     console.log($(this).attr("id") + " is clicked on");
     console.log("parent: " + $(this).parent().attr("id"));
@@ -62,14 +67,15 @@ let game = {
       event.data.enemy = null;
       event.data.defender = null;
     }
-  },
+  }
 
   //
   // fight as a user clicks on the Attack button 
   // Fighter class keeps track of character data. 
   //
-  fight: function(event) {
+  fight(event) {
     let thisFight = event.data;
+
     if (thisFight.player && !thisFight.attacker) {
       thisFight.attacker = new Fighter(thisFight.player, 10, 1.0);
     }
@@ -96,12 +102,12 @@ let game = {
       thisFight.defender = null;
       thisFight.enemy = null;
     }
-  },
+  }
 
   //
   // A facilitator function for fight()
   //
-  attack: function() {
+  attack() {
     let damage = this.attacker.ap * this.numAttacks;
     this.defender.healthPoints -= damage;
 
@@ -114,13 +120,13 @@ let game = {
     }
 
     return damage;
-  },
+  }
 
   //
   // Display the game fighting status messages
   // game.isOver condition may be updated
   //
-  displayMessage: function(damage) {
+  displayMessage(damage) {
     this.clearMsg();
 
     // player defeated the enemy
@@ -144,28 +150,28 @@ let game = {
       $("#msg1").text(`You attacked ${this.defender.name} for ${damage} damage`);
       $("#msg2").text(`${this.defender.name} attacked you back for ${this.defender.cAp} damage`);
     }
-  },
+  }
 
   //
   // Clear the game status messages at the bottom
   //
-  clearMsg: function() {
+  clearMsg() {
     $("#msg1").text("");
     $("#msg2").text("");
-  },
+  }
 
   //
   // The remaining number of enemies
   //
-  remainingEnemies: function () {
+  remainingEnemies() {
     return $("#enemy-section > .char-box").length;
-  },
+  }
 
   //
   // (re-)start the game
   //
-  start: function (event) {
-    thisGame = event.data;
+  start(event) {
+    let thisGame = event.data;
     ['player', 'enemy', 'attacker', 'defender'].forEach(function(e) {
       thisGame[e] = null;
     });
@@ -174,13 +180,13 @@ let game = {
     thisGame.clearMsg();
     $("#start").hide();
     thisGame.resetCharData();
-  },
+  }
 
   //
   // facilitator function for start()
   //
-  resetCharData: function() {
-    for (i = 0; i < this.charBoxes.length; i++) {
+  resetCharData() {
+    for (let i = 0; i < this.charBoxes.length; i++) {
       this.charBoxes[i].appendTo($("#initial-row"));
     }
     $(".char-box").appendTo("#initial-row");
