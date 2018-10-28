@@ -8,10 +8,10 @@ Star Wars RPG Game
 // Listen to mouse click events
 //
 function run() {
-  $(".char-box").click(game.setupFight);
-  $("#attack").click(game.fight);
+  $(".char-box").on("click", game, game.setupFight);
+  $("#attack").on("click", game, game.fight);
   $("#start").hide();
-  $("#start").click(game.start);
+  $("#start").on("click", game, game.start);
 }
 
 //
@@ -29,14 +29,14 @@ let game = {
   //
   // fight setup through a user character selections 
   //
-  setupFight: function () {
+  setupFight: function(event) {
     let section_name = $(this).parent().attr("id");
     console.log($(this).attr("id") + " is clicked on");
     console.log("parent: " + $(this).parent().attr("id"));
 
     // All character boxes are at top initially  
     if (section_name === 'initial-row') {
-      game.player = $(this).attr("id");
+      event.data.player = $(this).attr("id");
       console.log("You: " + $(this).attr("id") + " is selected");
       $(this).addClass("char-box-you");
       $(this).appendTo("#you");
@@ -45,12 +45,12 @@ let game = {
     }
     // Character elements in the Enemy section
     else if (section_name === 'enemy-section') {
-      if (!game.enemy) {
-        game.enemy = $(this).attr("id");
+      if (!event.data.enemy) {
+        event.data.enemy = $(this).attr("id");
         console.log("Enemy " + $(this).attr("id") + " is selected");
         $(this).addClass("char-box-defender");
         $(this).appendTo("#defender-section");
-        game.clearMsg();
+        event.data.clearMsg();
       }
     }
     // user can move the enemy defender back to the Enemy section
@@ -59,8 +59,8 @@ let game = {
       $(this).removeClass("char-box-defender");
       $(this).addClass("char-box-enemy");
       $(this).appendTo("#enemy-section");
-      game.enemy = null;
-      game.defender = null;
+      event.data.enemy = null;
+      event.data.defender = null;
     }
   },
 
@@ -68,32 +68,33 @@ let game = {
   // fight as a user clicks on the Attack button 
   // Fighter class keeps track of character data. 
   //
-  fight: function() {
-    if (game.player && !game.attacker) {
-      game.attacker = new Fighter(game.player, 10, 1.0);
+  fight: function(event) {
+    let thisFight = event.data;
+    if (thisFight.player && !thisFight.attacker) {
+      thisFight.attacker = new Fighter(thisFight.player, 10, 1.0);
     }
-    if (game.enemy && !game.defender) {
-      game.defender = new Fighter(game.enemy, 10, 1.8);
+    if (thisFight.enemy && !thisFight.defender) {
+      thisFight.defender = new Fighter(thisFight.enemy, 10, 1.8);
     }
-    if (!game.attacker || !game.defender || game.isOver) {
-      if (!game.attacker) {
+    if (!thisFight.attacker || !thisFight.defender || thisFight.isOver) {
+      if (!thisFight.attacker) {
         $("#msg1").text("Please select your character");
       }
-      else if (!game.isOver && !game.defender) {
+      else if (!thisFight.isOver && !thisFight.defender) {
         $("#msg1").text("Please select an enemy to attack");
       }
       return;
     }
 
-    game.numAttacks++;
-    let damage = game.attack();
-    game.displayMessage(damage);
+    thisFight.numAttacks++;
+    let damage = thisFight.attack();
+    thisFight.displayMessage(damage);
 
-    if (game.defender.outOfHealthPoints()) {
+    if (thisFight.defender.outOfHealthPoints()) {
       // detach and save it for restart 
-      game.charBoxes.push(game.defender.elem.detach());
-      game.defender = null;
-      game.enemy = null;
+      thisFight.charBoxes.push(thisFight.defender.elem.detach());
+      thisFight.defender = null;
+      thisFight.enemy = null;
     }
   },
 
@@ -101,14 +102,14 @@ let game = {
   // A facilitator function for fight()
   //
   attack: function() {
-    let damage = game.attacker.ap * game.numAttacks;
-    game.defender.healthPoints -= damage;
+    let damage = this.attacker.ap * this.numAttacks;
+    this.defender.healthPoints -= damage;
 
-    if (!game.defender.outOfHealthPoints()) {
-      game.attacker.healthPoints -= game.defender.cAp;
+    if (!this.defender.outOfHealthPoints()) {
+      this.attacker.healthPoints -= this.defender.cAp;
 
-      if (game.attacker.outOfHealthPoints()) {
-        game.isOver = true;
+      if (this.attacker.outOfHealthPoints()) {
+        this.isOver = true;
       }
     }
 
@@ -120,28 +121,28 @@ let game = {
   // game.isOver condition may be updated
   //
   displayMessage: function(damage) {
-    game.clearMsg();
+    this.clearMsg();
 
     // player defeated the enemy
-    if (game.defender.outOfHealthPoints()) {
-      if (game.remainingEnemies() === 0) { // No enemies left
+    if (this.defender.outOfHealthPoints()) {
+      if (this.remainingEnemies() === 0) { // No enemies left
         $("#msg1").text("You Won!!! GAME OVER!!!");
         $("#start").show();
-        game.isOver = true;
+        this.isOver = true;
       } else {
-        $("#msg1").text(`You have defeated ${game.defender.name}. You can choose to fight another enemy.`);
+        $("#msg1").text(`You have defeated ${this.defender.name}. You can choose to fight another enemy.`);
       }
     }
     // player is out of the Health Point; i.e. lost
-    else if (game.attacker.outOfHealthPoints()) {
+    else if (this.attacker.outOfHealthPoints()) {
       $("#msg1").text("You've been defeated. GAME OVER!!!");
       $("#start").show();
-      game.isOver = true;
+      this.isOver = true;
     }
     // still in fight
     else {
-      $("#msg1").text(`You attacked ${game.defender.name} for ${damage} damage`);
-      $("#msg2").text(`${game.defender.name} attacked you back for ${game.defender.cAp} damage`);
+      $("#msg1").text(`You attacked ${this.defender.name} for ${damage} damage`);
+      $("#msg2").text(`${this.defender.name} attacked you back for ${this.defender.cAp} damage`);
     }
   },
 
@@ -163,23 +164,24 @@ let game = {
   //
   // (re-)start the game
   //
-  start: function () {
+  start: function (event) {
+    thisGame = event.data;
     ['player', 'enemy', 'attacker', 'defender'].forEach(function(e) {
-      game[e] = null;
+      thisGame[e] = null;
     });
-    game.numAttacks = 0;
-    game.isOver = false;
-    game.clearMsg();
+    thisGame.numAttacks = 0;
+    thisGame.isOver = false;
+    thisGame.clearMsg();
     $("#start").hide();
-    game.resetCharData();
+    thisGame.resetCharData();
   },
 
   //
   // facilitator function for start()
   //
   resetCharData: function() {
-    for (i = 0; i < game.charBoxes.length; i++) {
-      game.charBoxes[i].appendTo($("#initial-row"));
+    for (i = 0; i < this.charBoxes.length; i++) {
+      this.charBoxes[i].appendTo($("#initial-row"));
     }
     $(".char-box").appendTo("#initial-row");
     $(".char-box").removeClass("char-box-you");
