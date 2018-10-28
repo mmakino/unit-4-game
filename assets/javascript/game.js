@@ -8,7 +8,7 @@ Star Wars RPG Game
 // Listen to mouse click events
 //
 // Need to pass the "game" class instance; otherwise, it will lose
-// the binding to the select element in the next click event.
+// the binding to the selected element in the subsequent click events.
 //
 function run(game) {
   $(".char-box").on("click", game, game.setupFight);
